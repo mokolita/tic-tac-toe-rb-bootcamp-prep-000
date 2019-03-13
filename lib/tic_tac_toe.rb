@@ -21,12 +21,55 @@ def input_to_index(user_input)
   user_input.to_i - 1
 end
 
+def move(board, index, current_player = "X")
+  board[index] = current_player
+end
+
+
 def position_taken?(board, index)
   !(board[index].nil? || board[index] == " ")
 end
 
+def valid_move?(board, index)
+  index.between?(0,8) && !position_taken?(board, index)
+end
 
-  def won?(board)
+def turn(board)
+  puts "Please enter 1-9:"
+  input = gets.strip
+  index = input_to_index(input)
+  if valid_move?(board, index)
+    move(board, index)
+    display_board(board)
+  else
+    turn(board)
+  end
+end
+
+def turn_count(board)
+  turns = 0 
+  
+  board.each do |position|
+    if (position == "X" || position == "O")
+      turns += 1 
+    else 
+    end 
+  end 
+ 
+  turns 
+end
+
+def current_player(board)
+  
+  if turn_count(board).even? 
+    return "X"
+  else turn_count(board).odd?
+    return "O"
+  end 
+
+end 
+
+def won?(board)
     WIN_COMBINATIONS.each do |win_combination|
       win_index_1 = win_combination[0]
       win_index_2 = win_combination[1]
@@ -90,56 +133,6 @@ end
     end
   else
     return nil
-  end
-end
-
-def turn_count(board)
-  turns = 0 
-  
-  board.each do |position|
-    if (position == "X" || position == "O")
-      turns += 1 
-    else 
-    end 
-  end 
- 
-  turns 
-end
-
-def current_player(board)
-  
-  if turn_count(board).even? 
-    return "X"
-  else turn_count(board).odd?
-    return "O"
-  end 
-
-end 
-
-
-
-
-def move(board, index, current_player = "X")
-  board[index] = current_player
-end
-
-def position_taken?(board, location)
-  board[location] != " " && board[location] != ""
-end
-
-def valid_move?(board, index)
-  index.between?(0,8) && !position_taken?(board, index)
-end
-
-def turn(board)
-  puts "Please enter 1-9:"
-  input = gets.strip
-  index = input_to_index(input)
-  if valid_move?(board, index)
-    move(board, index)
-    display_board(board)
-  else
-    turn(board)
   end
 end
 
